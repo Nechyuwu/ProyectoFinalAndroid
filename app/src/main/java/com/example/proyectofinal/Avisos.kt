@@ -13,8 +13,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,79 +42,77 @@ import com.example.proyectofinal.viewmodel.AdviceViewModel
 @Composable
 fun PantallaAvisos(navController: NavController, viewModel: AdviceViewModel = viewModel()) {
     val consejo by viewModel.advice.collectAsState()
-    Image(
-        painter = painterResource(id = R.drawable.gatosfondo), // Aquí se coloca la imagen
-        contentDescription = "",
-        contentScale = ContentScale.Crop, // O puedes usar FillBounds dependiendo de cómo quieres que se ajuste
-        modifier = Modifier.fillMaxSize() // La imagen ocupa todo el espacio disponible
-    )
-    Scaffold(
-        modifier = Modifier,
-        topBar = {
-            Button(onClick = { navController.popBackStack("inicio", inclusive = false) },
-                modifier = Modifier.padding(top = 20.dp, start = 15.dp)) {
-                Text("Volver al Inicio")
+
+
+        Scaffold(
+            modifier = Modifier,
+            topBar = {
+                Button(onClick = { navController.popBackStack("inicio", inclusive = false) },
+                    modifier = Modifier.padding(top = 20.dp, start = 15.dp)) {
+                    Icon(Icons.Filled.ArrowBack, contentDescription = "Arrow Back ")
+                    Text("Volver al Inicio")
+                }
             }
-        }
-    ) { padding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-
-                .padding(padding),
-            contentAlignment = Alignment.Center,
-
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+        ) { padding ->
+            Box(
                 modifier = Modifier
-                    .background(color = Color.Blue)
-                    .fillMaxWidth(0.9f)
-                    .border(
-                        width = 4.dp,
-                        color = Color.Black,
-                        shape = RoundedCornerShape(0.dp)
-                    )
+                    .fillMaxSize()
 
-            ) {
-                Text(
-                    text = consejo,
-                    textAlign = TextAlign.Center,
-                    color = Color.Black,
+                    .padding(padding),
+                contentAlignment = Alignment.Center,
+
+                ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
                     modifier = Modifier
+                        .background(color = Color.Blue)
+                        .fillMaxWidth(0.9f)
+                        .border(
+                            width = 4.dp,
+                            color = Color.Black,
+                            shape = RoundedCornerShape(0.dp)
+                        )
+
+                ) {
+                    Text(
+                        text = consejo,
+                        textAlign = TextAlign.Center,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .background(color = Color.White)
+                            .fillMaxWidth()
+
+
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.gatopro),
+                        contentDescription = "",
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier
+                            .background(color = Color.Green)
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.5f)
+                    )
+                }
+                Button(
+                    onClick = { viewModel.getAdvice() },
+                    colors = buttonColors(containerColor = Color(255, 255, 255)),
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
                         .background(color = Color.White)
-                        .fillMaxWidth()
 
+                        .size(150.dp,100.dp)
+                        .border(
+                            width = 4.dp,
+                            color = Color.Black,
+                            shape = RectangleShape,
+                        )
 
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.gatopro),
-                    contentDescription = "",
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier
-                        .background(color = Color.Green)
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.5f)
-                )
-            }
-            Button(
-                onClick = { viewModel.getAdvice() },
-                colors = buttonColors(containerColor = Color(255, 255, 255)),
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .background(color = Color.White)
-                    .padding(bottom = 45.dp)
-                    .size(100.dp)
-                    .border(
-                        width = 4.dp,
-                        color = Color.Black,
-                        shape = RectangleShape,
-                    )
-
-            ) {
-                Text("Otro Consejo", color = Color.Black,)
+                ) {
+                    Text("Otro Consejo", color = Color.Black,)
+                }
             }
         }
     }
-}
+
