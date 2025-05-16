@@ -7,20 +7,16 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -32,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.proyectofinal.viewmodel.AdviceViewModel
@@ -43,11 +38,17 @@ import com.example.proyectofinal.viewmodel.AdviceViewModel
 @Composable
 fun PantallaAvisos(navController: NavController, viewModel: AdviceViewModel = viewModel()) {
     val consejo by viewModel.advice.collectAsState()
-
+    Image(
+        painter = painterResource(id = R.drawable.gatosfondo), // Aquí se coloca la imagen
+        contentDescription = "",
+        contentScale = ContentScale.Crop, // O puedes usar FillBounds dependiendo de cómo quieres que se ajuste
+        modifier = Modifier.fillMaxSize() // La imagen ocupa todo el espacio disponible
+    )
     Scaffold(
         modifier = Modifier,
         topBar = {
-            Button(onClick = { navController.popBackStack("inicio", inclusive = false) }) {
+            Button(onClick = { navController.popBackStack("inicio", inclusive = false) },
+                modifier = Modifier.padding(top = 20.dp, start = 15.dp)) {
                 Text("Volver al Inicio")
             }
         }
@@ -55,9 +56,10 @@ fun PantallaAvisos(navController: NavController, viewModel: AdviceViewModel = vi
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.White)
+
                 .padding(padding),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
+
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -72,16 +74,16 @@ fun PantallaAvisos(navController: NavController, viewModel: AdviceViewModel = vi
                     )
 
             ) {
-                    Text(
-                        text = consejo,
-                        textAlign = TextAlign.Center,
-                        color = Color.Black,
-                        modifier = Modifier
-                            .background(color = Color.White)
-                            .fillMaxWidth()
+                Text(
+                    text = consejo,
+                    textAlign = TextAlign.Center,
+                    color = Color.Black,
+                    modifier = Modifier
+                        .background(color = Color.White)
+                        .fillMaxWidth()
 
 
-                    )
+                )
                 Image(
                     painter = painterResource(id = R.drawable.gatopro),
                     contentDescription = "",
@@ -97,6 +99,7 @@ fun PantallaAvisos(navController: NavController, viewModel: AdviceViewModel = vi
                 colors = buttonColors(containerColor = Color(255, 255, 255)),
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
+                    .background(color = Color.White)
                     .padding(bottom = 45.dp)
                     .size(100.dp)
                     .border(
@@ -106,7 +109,7 @@ fun PantallaAvisos(navController: NavController, viewModel: AdviceViewModel = vi
                     )
 
             ) {
-                Text("Otro Consejo",color = Color.Black,)
+                Text("Otro Consejo", color = Color.Black,)
             }
         }
     }
