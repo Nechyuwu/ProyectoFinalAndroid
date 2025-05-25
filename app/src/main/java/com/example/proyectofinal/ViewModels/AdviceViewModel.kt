@@ -1,24 +1,32 @@
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+package com.example.proyectofinal.viewmodel
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.proyectofinal.ApiAdvice.Advice
-import com.example.proyectofinal.ApiAdvice.RetrofitClient
+import com.example.proyectofinal.ApiAdvice.RetrofitInstance
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class AdviceViewModel : ViewModel() {
 
-    private val _advice = mutableStateOf<String?>(null)
-    val advice: State<String?> = _advice
+    private val _advice = MutableStateFlow("Cargando consejo...")
+    val advice: StateFlow<String> = _advice
 
-    fun fetchRandomAdvice() {
+    init {
+        getAdvice()
+    }
+
+    fun getAdvice() {
         viewModelScope.launch {
-            val response: Response<Advice> = RetrofitClient.adviceApiService.getRandomAdvice()
-            if (response.isSuccessful) {
-                _advice.value = response.body()?.slip?.advice
-            } else {
-                _advice.value = "No se pudo obtener el consejo."
+            try {
+                val response = RetrofitInstance.api.getRandomAdvice()
+                if (response.isSuccessful) {
+                    _advice.value = response.body()?.slip?.advice ?: "Consejo no disponible"
+                } else {
+                    _advice.value = "Error al obtener consejo"
+                }
+            } catch (e: Exception) {
+                _advice.value = "Error: ${e.message}"
             }
         }
     }
